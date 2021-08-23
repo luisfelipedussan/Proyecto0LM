@@ -37,7 +37,7 @@ def comandos():
     mp.put(catalog["comandos"],'TO',0)
     mp.put(catalog["comandos"],'OUTPUT',0)
     mp.put(catalog["comandos"],'END',0)
-    
+    #prueba
 
     
     
