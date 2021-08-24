@@ -22,7 +22,7 @@ def Leng_structures(catalog : Mapping[str, Any]):
     mp.put(catalog["terminales"],'CHECK',0)
     mp.put(catalog["terminales"],'BLOCKEDP',0)
     mp.put(catalog["terminales"],'NOP',0)
-    mp.put(catalog["terminales"],'BLOCKE',0)
+    mp.put(catalog["terminales"],'BLOCK',0)
     mp.put(catalog["terminales"],'REAPEAT',0)
     mp.put(catalog["terminales"],'IF',0)
     mp.put(catalog["terminales"],'DEFINE',0)
@@ -38,7 +38,7 @@ def Leng_structures(catalog : Mapping[str, Any]):
 
 
 def verify_sintax():
-    correct = True #empieza suponiendo que el script esta bien escrito.
+    correct = False #empieza suponiendo que el script esta bien escrito.
     fileName = input('Enter file name: ')
     catalog = { 'terminales' : None,
                     'user_defined': None }
@@ -52,15 +52,84 @@ def verify_sintax():
     for line in lines: # si todo sale bien empieza a leer el archivo.
         if line=="\n" or line=="\t": 
             continue
-        contents = line.strip().split()
-        if contents[0]== "DEFINE": #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
-            assert mp.get(catalog['terminales'],contents[1])== None, 'el nombre dado para la variable definida no puede ser una de las palabras reservadas\n En: '+" ".join(contents)
+        contents = line.strip().split() # la linea del script del robot que se esta examinando.
+        #Evalua todos los posibles primeros argumentos.
+        if contents[0]== "DEFINE":
+
             try:
+                #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
+                if mp.get(catalog['terminales'],contents[1])!= None: 
+                 print('Error:')
+                 print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:',line)
+                 return correct
+                # Intenta guardar el valor asignado a la variable por el usuario.
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
             except ValueError:
-                correct = False
+                print('Error:')
+                print('El valor a guardar en la variable debe ser un numero entero\n En:',line)
                 return correct
-    return correct
+            except IndexError:
+                print('Error:')
+                print('faltan argumentos en la entrada\n En:',line)
+                return correct
+            if len(contents)!=3:
+                print('Error:')
+                print('Se esperaban solo 3 argumentos pero se recibieron mas\n En:',line)
+                return correct
+
+        elif contents[0]== "MOVE":
+            #verifica que el numero de pasos a mover sea un entero:
+            try:
+                int(contents[1])
+            except ValueError:
+                print('Error:')
+                print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                return correct
+            except IndexError:
+                print('Error:')
+                print('faltan argumentos en la entrada\n En:',line)
+                return correct
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                return correct
+            
+        elif contents[0]== "RIGHT":
+            #verifica que el numero de pasos a mover sea un entero:
+            try:
+                int(contents[1])
+            except ValueError:
+                print('Error:')
+                print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                return correct
+            except IndexError:
+                print('Error:')
+                print('faltan argumentos en la entrada\n En:',line)
+                return correct
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                return correct
+        
+        # elif contents[0]== "LEFT":
+        # elif contents[0]== "ROTATE":
+        # elif contents[0]== "LOOK":
+        # elif contents[0]== "DROP":
+        # elif contents[0]== "FREE":
+        # elif contents[0]== "PICK":
+        # elif contents[0]== "POP":
+        # elif contents[0]== "CHECK":
+        # elif contents[0]== "BLOCKEDP":
+        # elif contents[0]== "NOP":
+        # elif contents[0]== "BLOCK":
+        # elif contents[0]== "REAPEAT":
+        # elif contents[0]== "IF":
+        # elif contents[0]== "TO":
+        # elif contents[0]== "OUTPUT":
+        # elif contents[0]== "END":
+        # else 
+
+
 
 #RESPUESTA BUSCADA:
-print(verify_sintax())
+verify_sintax()
