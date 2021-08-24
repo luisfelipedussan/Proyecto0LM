@@ -33,6 +33,7 @@ def Leng_structures(catalog : Mapping[str, Any]):
     mp.put(catalog["terminales"],')',0)
     mp.put(catalog["terminales"],'[',0)
     mp.put(catalog["terminales"],']',0)
+    mp.put(catalog["terminales"],'!',0)
     
 
 
@@ -52,11 +53,8 @@ def verify_sintax():
         if line=="\n" or line=="\t": 
             continue
         contents = line.strip().split()
-        if contents[0]== "DEFINE":
-            if mp.get(catalog['terminales'],contents[1])!= None: #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
-                correct = False
-                print('entro correctamente')
-                return correct
+        if contents[0]== "DEFINE": #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
+            assert mp.get(catalog['terminales'],contents[1])== None, 'el nombre dado para la variable definida no puede ser una de las palabras reservadas\n En: '+" ".join(contents)
             try:
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
             except ValueError:
