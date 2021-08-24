@@ -1,46 +1,68 @@
+import sys
+from typing import Any, Mapping
 import config
 from DISClib.DataStructures import mapstructure as ht
 from DISClib.ADT import map as mp
 
-fileName = input('Enter file name: ')
-try:
-    fh = open(fileName)
-    for line in fh:
-        print(line.upper().rstrip())
-except:
-     print('the file you want to open was not found')
-     
 
-
-def comandos():
-    catalog = { 'comandos' : None,
-               'user_defined': None }
-    catalog['comandos'] = mp.newMap(numelements=30,maptype = 'CHAINING')
-    catalog['user_derfined']= mp.newMap(numelements=1000, maptype= 'CHAINING')
+def Leng_structures(catalog : Mapping[str, Any]):
     
-    mp.put(catalog["comandos"],'MOVE',0)
-    mp.put(catalog["comandos"],'RIGHT',0)
-    mp.put(catalog["comandos"],'LEFT',0)
-    mp.put(catalog["comandos"],'ROTATE',0)
-    mp.put(catalog["comandos"],'LOOK',0)
-    mp.put(catalog["comandos"],'DROP',0)
-    mp.put(catalog["comandos"],'FREE',0)
-    mp.put(catalog["comandos"],'PICK',0)
-    mp.put(catalog["comandos"],'POP',0)
-    mp.put(catalog["comandos"],'CHECK',0)
-    mp.put(catalog["comandos"],'BLOCKEDP',0)
-    mp.put(catalog["comandos"],'NOP',0)
-    mp.put(catalog["comandos"],'BLOCKE',0)
-    mp.put(catalog["comandos"],'REAPEAT',0)
-    mp.put(catalog["comandos"],'IF',0)
-    mp.put(catalog["comandos"],'DEFINE',0)
-    mp.put(catalog["comandos"],'TO',0)
-    mp.put(catalog["comandos"],'OUTPUT',0)
-    mp.put(catalog["comandos"],'END',0)
-    #prueba
-
+    catalog['terminales'] = mp.newMap(numelements=30,maptype = 'CHAINING')
+    catalog['user_defined']= mp.newMap(numelements=1000, maptype= 'CHAINING')
     
+    mp.put(catalog["terminales"],'MOVE',0)
+    mp.put(catalog["terminales"],'RIGHT',0)
+    mp.put(catalog["terminales"],'LEFT',0)
+    mp.put(catalog["terminales"],'ROTATE',0)
+    mp.put(catalog["terminales"],'LOOK',0)
+    mp.put(catalog["terminales"],'DROP',0)
+    mp.put(catalog["terminales"],'FREE',0)
+    mp.put(catalog["terminales"],'PICK',0)
+    mp.put(catalog["terminales"],'POP',0)
+    mp.put(catalog["terminales"],'CHECK',0)
+    mp.put(catalog["terminales"],'BLOCKEDP',0)
+    mp.put(catalog["terminales"],'NOP',0)
+    mp.put(catalog["terminales"],'BLOCKE',0)
+    mp.put(catalog["terminales"],'REAPEAT',0)
+    mp.put(catalog["terminales"],'IF',0)
+    mp.put(catalog["terminales"],'DEFINE',0)
+    mp.put(catalog["terminales"],'TO',0)
+    mp.put(catalog["terminales"],'OUTPUT',0)
+    mp.put(catalog["terminales"],'END',0)
+    mp.put(catalog["terminales"],'(',0)
+    mp.put(catalog["terminales"],')',0)
+    mp.put(catalog["terminales"],'[',0)
+    mp.put(catalog["terminales"],']',0)
     
 
-    
-   
+
+def verify_sintax():
+    correct = True #empieza suponiendo que el script esta bien escrito.
+    fileName = input('Enter file name: ')
+    catalog = { 'terminales' : None,
+                    'user_defined': None }
+    Leng_structures(catalog) #crea los diccionarios donde se guarda el lenguaje predefinido y el definido por el usuario.
+    try:
+        fh = open(fileName)
+        lines = fh.readlines()
+    except:
+        print('the file you want to open was not found.','Error class: ',sys.exc_info()[0])    
+
+    for line in lines: # si todo sale bien empieza a leer el archivo.
+        if line=="\n" or line=="\t": 
+            continue
+        contents = line.strip().split()
+        if contents[0]== "DEFINE":
+            if mp.get(catalog['terminales'],contents[1])!= None: #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
+                correct = False
+                print('entro correctamente')
+                return correct
+            try:
+                mp.put(catalog['user_defined'],contents[1],int(contents[2]))
+            except ValueError:
+                correct = False
+                return correct
+    return correct
+
+#RESPUESTA BUSCADA:
+print(verify_sintax())
