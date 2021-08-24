@@ -61,21 +61,18 @@ def verify_sintax():
                 if mp.get(catalog['terminales'],contents[1])!= None: 
                  print('Error:')
                  print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:',line)
-                 return correct
                 # Intenta guardar el valor asignado a la variable por el usuario.
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
             except ValueError:
                 print('Error:')
                 print('El valor a guardar en la variable debe ser un numero entero\n En:',line)
-                return correct
             except IndexError:
                 print('Error:')
                 print('faltan argumentos en la entrada\n En:',line)
-                return correct
             if len(contents)!=3:
                 print('Error:')
                 print('Se esperaban solo 3 argumentos pero se recibieron mas\n En:',line)
-                return correct
+                
 
         elif contents[0]== "MOVE":
             #verifica que el numero de pasos a mover sea un entero:
@@ -84,15 +81,13 @@ def verify_sintax():
             except ValueError:
                 print('Error:')
                 print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
-                return correct
             except IndexError:
                 print('Error:')
                 print('faltan argumentos en la entrada\n En:',line)
-                return correct
             if len(contents)!=2:
                 print('Error:')
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
-                return correct
+                
             
         elif contents[0]== "RIGHT":
             #verifica que el numero de pasos a mover sea un entero:
@@ -101,15 +96,13 @@ def verify_sintax():
             except ValueError:
                 print('Error:')
                 print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
-                return correct
             except IndexError:
                 print('Error:')
                 print('faltan argumentos en la entrada\n En:',line)
-                return correct
             if len(contents)!=2:
                 print('Error:')
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
-                return correct
+                
         
         # elif contents[0]== "LEFT":
         # elif contents[0]== "ROTATE":
