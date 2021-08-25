@@ -55,7 +55,6 @@ def verify_sintax():
         contents = line.strip().split() # la linea del script del robot que se esta examinando.
         #Evalua todos los posibles primeros argumentos.
         if contents[0]== "DEFINE":
-
             try:
                 #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
                 if mp.get(catalog['terminales'],contents[1])!= None: 
@@ -68,51 +67,191 @@ def verify_sintax():
                 print('El valor a guardar en la variable debe ser un numero entero\n En:',line)
             except IndexError:
                 print('Error:')
-                print('faltan argumentos en la entrada\n En:',line)
+                print('Faltan argumentos en la entrada\n En:',line)
             if len(contents)!=3:
                 print('Error:')
                 print('Se esperaban solo 3 argumentos pero se recibieron mas\n En:',line)
-                
-
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
         elif contents[0]== "MOVE":
-            #verifica que el numero de pasos a mover sea un entero:
             try:
                 int(contents[1])
             except ValueError:
-                print('Error:')
-                print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
             except IndexError:
                 print('Error:')
-                print('faltan argumentos en la entrada\n En:',line)
+                print('Faltan argumentos en la entrada\n En:',line)
             if len(contents)!=2:
                 print('Error:')
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
-                
-            
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
         elif contents[0]== "RIGHT":
-            #verifica que el numero de pasos a mover sea un entero:
             try:
                 int(contents[1])
             except ValueError:
-                print('Error:')
-                print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
             except IndexError:
                 print('Error:')
-                print('faltan argumentos en la entrada\n En:',line)
+                print('Faltan argumentos en la entrada\n En:',line)
             if len(contents)!=2:
                 print('Error:')
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
-                
-        
-        # elif contents[0]== "LEFT":
-        # elif contents[0]== "ROTATE":
-        # elif contents[0]== "LOOK":
-        # elif contents[0]== "DROP":
-        # elif contents[0]== "FREE":
-        # elif contents[0]== "PICK":
-        # elif contents[0]== "POP":
-        # elif contents[0]== "CHECK":
-        # elif contents[0]== "BLOCKEDP":
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "LEFT":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "ROTATE":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        # este tampoco es igual a la mayoria.
+        elif contents[0]== "LOOK":
+            try:
+                if contents[1]!='N' and contents[1]!='E' and contents[1]!='W' and contents[1]!='S':
+                    print('Error:')
+                    print('El argumento para el comando LOOK no es valido. Los argumentos permitidos son: N, E, W o S.\n En:',line)
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "DROP":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "FREE":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "PICK":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        elif contents[0]== "POP":
+            try:
+                int(contents[1])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=2:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        # Este tambien es diferente a la mayoria.
+        elif contents[0]== "CHECK":
+            try:
+                if contents[1]!= 'C' and contents[1]!= 'B':
+                    print('Error:')
+                    print('El argumento para el comando CHECK no es valido. Los argumentos permitidos son: C o B seguidos del numero a revisar.\n En:',line)
+                int(contents[2])
+            except ValueError:
+                if mp.get(catalog['user_defined'],contents[2])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                    print('Error:')
+                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:',line)
+                else:
+                    continue
+            except IndexError:
+                print('Error:')
+                print('Faltan argumentos en la entrada\n En:',line)
+            if len(contents)!=3:
+                print('Error:')
+                print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+        #Este ya no es igual a los demas.
+        elif contents[0]== "BLOCKEDP":
+            if len(contents)!=1:
+                print('Error:')
+                print('Se esperaba solo 1 argumento(s) pero se recibieron mas\n En:',line)
+                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                return
+    
         # elif contents[0]== "NOP":
         # elif contents[0]== "BLOCK":
         # elif contents[0]== "REAPEAT":
