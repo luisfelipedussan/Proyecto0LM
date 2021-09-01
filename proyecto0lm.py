@@ -1,15 +1,17 @@
+from DISClib.ADT.list import newList
 import sys
 from typing import Any, Mapping
 import config
 from DISClib.DataStructures import mapstructure as ht
 from DISClib.ADT import map as mp
+from DISClib.ADT import list as lt
 
 
 def Leng_structures(catalog : Mapping[str, Any]):
     
     catalog['terminales'] = mp.newMap(numelements=30,maptype = 'CHAINING')
     catalog['user_defined']= mp.newMap(numelements=1000, maptype= 'CHAINING')
-    
+    catalog['funciones'] = mp.newMap(numelements=1000, maptype= 'CHAINING')
     mp.put(catalog["terminales"],'MOVE',0)
     mp.put(catalog["terminales"],'RIGHT',0)
     mp.put(catalog["terminales"],'LEFT',0)
@@ -36,10 +38,13 @@ def Leng_structures(catalog : Mapping[str, Any]):
     mp.put(catalog["terminales"],'!',0)
     
 catalog = { 'terminales' : None,
-                    'user_defined': None }
+            'user_defined': None,
+            'funciones': None
+                    }
 Leng_structures(catalog) #crea los diccionarios donde se guarda el lenguaje predefinido y el definido por el usuario.
-correct = False #empieza suponiendo que el script esta bien escrito.
+correct = True #empieza suponiendo que el script esta bien escrito.
 parentesis = False
+parentesis2 = True
     
 def verify_sintax():
     fileName = input('Enter file name: ')
@@ -49,208 +54,357 @@ def verify_sintax():
     except:
         print('the file you want to open was not found.','Error class: ',sys.exc_info()[0])    
 # si todo sale bien empieza a leer el archivo.
+    contador = 1
     for line in lines: 
         if line=="\n" or line =="\t": 
+            contador += 1 
             continue
         contents = line.strip().split() # la linea del script del robot que se esta examinando.
         #Evalua todos los posibles primeros argumentos.
-        verificar_comando(contents)
+        verificar_comando(contents,contador)
+        contador += 1
         
-def verificar_comando(contents):
+    
+    #Esta función toma linea por linea y revisa si dicha linea en particular está bien escrita    
+def verificar_comando(contents,contador):
     global parentesis
+    global parentesis2
+    global correct
     if contents[0]== "DEFINE":
             try:
                 #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
                 if mp.get(catalog['terminales'],contents[1])!= None: 
                  print('Error:')
                  print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:', " ".join(contents))
+                 print("\n")
+                correct = False
                 # Intenta guardar el valor asignado a la variable por el usuario.
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
             except ValueError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('El valor a guardar en la variable debe ser un numero entero\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=3:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 3 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "MOVE":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "RIGHT":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "LEFT":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "ROTATE":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
         # este tampoco es igual a la mayoria.
     elif contents[0]== "LOOK":
             try:
                 if contents[1]!='N' and contents[1]!='E' and contents[1]!='W' and contents[1]!='S':
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para el comando LOOK no es valido. Los argumentos permitidos son: N, E, W o S.\n En:', " ".join(contents))
+                    print("\n")
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                correct = False
+                print("\n")
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "DROP":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                    correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                correct = False
+                print("\n")
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                correct = False
+                print("\n")
     elif contents[0]== "FREE":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
     elif contents[0]== "PICK":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                    correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
     elif contents[0]== "POP":
             try:
                 int(contents[1])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                    correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                print("\n")
+                correct = False
             if len(contents)!=2:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
         # Este tambien es diferente a la mayoria.
     elif contents[0]== "CHECK":
             try:
                 if contents[1]!= 'C' and contents[1]!= 'B':
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para el comando CHECK no es valido. Los argumentos permitidos son: C o B seguidos del numero a revisar.\n En:', " ".join(contents))
+                    print("\n")
                 int(contents[2])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[2])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
-                    print('Error:')
+                    print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print("\n")
+                    correct = False
             except IndexError:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
+                correct = False
             if len(contents)!=3:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
         #Este ya no es igual a los demas.
     elif contents[0]== "BLOCKEDP":
             if len(contents)!=1:
-                print('Error:')
+                print('Error en línea:',contador)
                 print('Se esperaba solo 1 argumento(s) pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente') 
-    elif contents[0]== "NOP":
+                print("\n") 
+                correct = False
+    elif contents[0] == "NOP" or contents[0] == "NOP]":
             if len(contents) != 1:
+                print('Error en línea:',contador)
                 print('Se esperaba solo 1 argumento(s) pero se recibieron mas\n En:', " ".join(contents))
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente') 
+                print("\n")
+                correct = False
+            elif contents[0][-1] == "]":
+                if parentesis2== True:
+                    print('Error en línea:',contador) 
+                    print("Se encontró una cadena de bloque que nunca fue abierta")
+                    print("\n")
+                    correct = False
+                elif parentesis2 == False:
+                    parentesis2 = True
     elif contents[0]== "(BLOCK":
             parentesis = True
             if len(contents) != 1:
                 del contents[0]
-                verificar_comando(contents)
+                verificar_comando(contents,contador)
     elif contents[0] == (")"):
             if parentesis == False:
-                print("Error:")
+                print('Error en línea:',contador)
                 print ("Primero se debe abrir un bloque de código")
-                print('El parser se ha detenido, Corrige tu script he intenta nuevamente')
+                print("\n")
+                correct = False
             if parentesis == True:
                 parentesis = False
+    elif contents[0]== "IF":
+            try:
+                contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP" or contents[2][0] == "["
+            except ValueError:
+                print('Error en línea:',contador)
+                print("Revisa la función IF")
+                print("\n")
+                correct = False
+            if contents[2][0] =="[":
+                parentesis2= False
+    elif contents[0] == "]":
+        if parentesis2 == False:
+            parentesis2 = True
+        if parentesis2 == True:
+            print('Error en línea:',contador)
+            print("No se abrió previamente ningún bloque")
+            print("\n")
+            correct = False
+    elif contents[0]== "REAPEAT":
+        #revisa si n es una variable defininda o un número entero
+        try:
+            if mp.get(catalog['user_defined'],int(contents[1])) == None:
+                print('Error en línea:',contador)
+                print("No se ha definido la varibale utilizada")
+                correct = False
+        except ValueError:
+                print('Error en línea:',contador)
+                print("La variable n no es un entero")
+                print("\n")
+                correct = False
+        try:
+                contents[2] == str("[")
+                parentesis2 = False
+        except ValueError:
+                print('Error en línea:',contador)
+                print("Debe abrir el bloque de comandos")
+                print("\n")
+                correct = False
+    elif contents[0]== "TO":
+        #Revisión de la la función definida
+        try:
+            if mp.get( catalog['funciones'],str(contents[1])) == None:
+                parametros = lt.newList('SINGLE_LINKED')
+                mp.put(catalog['funciones'],str(contents[1]),parametros)
+            else:
+                print('Error en línea:',contador)
+                print("La función ya estaba definida previamente")
+                print("\n")
+                correct = False
+        except ValueError:
+            print('Error en línea:',contador)
+            print("El nombre de la función debe ser de tipo str")
+            print("\n")
+            correct = False
+        #revisión de los parametros definidos
+        lcon = len(contents)
+        if lcon > 1 :
+            del contents[0]
+            del contents[0]
+            for param in contents:
+                if param[0] != ":":
+                    print(param[0])
+                    print('Error en línea:',contador)
+                    print("Para definir un parametro debe comenzar con :")
+                    print("\n")
+                    correct = False
+                else:
+                    lt.addLast(parametros,param)     
         
+             
+                
+                
+    
         
-        # elif contents[0]== "REAPEAT":
-        # elif contents[0]== "IF":
-        # elif contents[0]== "TO":
-        # elif contents[0]== "OUTPUT":
+verify_sintax()
+if correct == False:
+    print("\n")
+    print("**********")
+    print("El código está incorrectamente escrito")
+    print("**********")
+    print("\n")
+else:
+    print("\n")
+    print("**********")
+    print("El código está correctamente escrito")
+    print("**********")
+    print("\n")
+
         # elif contents[0]== "END":
         # else 
 
-
-
 #RESPUESTA BUSCADA:
-verify_sintax()
