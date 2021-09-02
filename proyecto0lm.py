@@ -12,6 +12,8 @@ def Leng_structures(catalog : Mapping[str, Any]):
     catalog['terminales'] = mp.newMap(numelements=30,maptype = 'CHAINING')
     catalog['user_defined']= mp.newMap(numelements=1000, maptype= 'CHAINING')
     catalog['funciones'] = mp.newMap(numelements=1000, maptype= 'CHAINING')
+    catalog['parametros'] = mp.newMap(numelements= 1000,maptype='CHAINING')
+    
     mp.put(catalog["terminales"],'MOVE',0)
     mp.put(catalog["terminales"],'RIGHT',0)
     mp.put(catalog["terminales"],'LEFT',0)
@@ -39,15 +41,19 @@ def Leng_structures(catalog : Mapping[str, Any]):
     
 catalog = { 'terminales' : None,
             'user_defined': None,
-            'funciones': None
+            'funciones': None,
+            'parametros' : None
                     }
 Leng_structures(catalog) #crea los diccionarios donde se guarda el lenguaje predefinido y el definido por el usuario.
 correct = True #empieza suponiendo que el script esta bien escrito.
 parentesis = False
 parentesis2 = True
+output = True
+end = True
     
 def verify_sintax():
     fileName = input('Enter file name: ')
+    print("\n")
     try:
         fh = open(fileName)
         lines = fh.readlines()
@@ -61,15 +67,20 @@ def verify_sintax():
             continue
         contents = line.strip().split() # la linea del script del robot que se esta examinando.
         #Evalua todos los posibles primeros argumentos.
+        
         verificar_comando(contents,contador)
         contador += 1
         
     
     #Esta función toma linea por linea y revisa si dicha linea en particular está bien escrita    
 def verificar_comando(contents,contador):
+    
     global parentesis
     global parentesis2
     global correct
+    global output
+    global end
+    
     if contents[0]== "DEFINE":
             try:
                 #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
@@ -99,7 +110,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -135,7 +146,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -154,7 +165,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -190,7 +201,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -209,9 +220,9 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
-                    print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    print('El argumento para', contents[0] ,'debe ser un numero entero o una varibale definida','\n En:', " ".join(contents))
                     print("\n")
             except IndexError:
                 print('Error en línea:',contador)
@@ -225,7 +236,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -244,7 +255,7 @@ def verificar_comando(contents,contador):
             try:
                 int(contents[1])
             except ValueError:
-                if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
+                if mp.get(catalog['user_defined'],contents[1])==None and mp.get(catalog['parametros'], contents[1]== None): # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
@@ -307,24 +318,25 @@ def verificar_comando(contents,contador):
             parentesis = True
             if len(contents) != 1:
                 del contents[0]
+                contador -= 1
                 verificar_comando(contents,contador)
-    elif contents[0] == (")"):
+    elif contents[0] == (")") or contents[-1][len(contents[-1])-1] == (")"):
             if parentesis == False:
                 print('Error en línea:',contador)
                 print ("Primero se debe abrir un bloque de código")
                 print("\n")
                 correct = False
-            if parentesis == True:
+            elif parentesis == True:
                 parentesis = False
     elif contents[0]== "IF":
             try:
-                contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP" or contents[2][0] == "["
+                contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP" or contents[2][0] == "["  
             except ValueError:
                 print('Error en línea:',contador)
                 print("Revisa la función IF")
                 print("\n")
                 correct = False
-            if contents[2][0] =="[":
+            if contents[2][0] =="[" or contents[-1] == "[":
                 parentesis2= False
     elif contents[0] == "]":
         if parentesis2 == False:
@@ -335,6 +347,7 @@ def verificar_comando(contents,contador):
             print("\n")
             correct = False
     elif contents[0]== "REAPEAT":
+        output = True
         #revisa si n es una variable defininda o un número entero
         try:
             if mp.get(catalog['user_defined'],int(contents[1])) == None:
@@ -355,11 +368,12 @@ def verificar_comando(contents,contador):
                 print("\n")
                 correct = False
     elif contents[0]== "TO":
+        output = False
+        end = False
         #Revisión de la la función definida
         try:
-            if mp.get( catalog['funciones'],str(contents[1])) == None:
-                parametros = lt.newList('SINGLE_LINKED')
-                mp.put(catalog['funciones'],str(contents[1]),parametros)
+            if  mp.get( catalog['funciones'],str(contents[1])) == None:
+                mp.put(catalog['funciones'],str(contents[1]),None)
             else:
                 print('Error en línea:',contador)
                 print("La función ya estaba definida previamente")
@@ -376,15 +390,48 @@ def verificar_comando(contents,contador):
             del contents[0]
             del contents[0]
             for param in contents:
-                if param[0] != ":":
-                    print(param[0])
+                if param[0] != ":" :
                     print('Error en línea:',contador)
                     print("Para definir un parametro debe comenzar con :")
                     print("\n")
                     correct = False
                 else:
-                    lt.addLast(parametros,param)     
+                    mp.put(catalog['parametros'],param,None)    
+    elif contents[0] == "OUTPUT" or contents[0] == "output":
+        if output == False:
+            output = True
+        elif output == True:
+            print("Error en la línea:", contador)
+            print(contents)
+            print("No existe la apertura de alguna función")
+            print(len(contents))
+            print("\n")
+        if len(contents) > 1:
+            del contents[0]
+            contador -= 1
+            verificar_comando(contents,contador)
+    elif contents[0] == "END":
+        if end == False:
+            end = True
+        elif end == True:
+            print ("Error en la línea:",contador)
+            print("No se le puede poner fin a una función que nunca fue abierta")
+            print("\n")
+    elif  contents[0] == mp.get(catalog['funciones'],contents[0]) != None:
+            for param in range(1,len(contents)):
+                if mp.get(catalog['parametros'],param) == None:
+                    print("Error en línea:",contador)
+                    print("No se ha definido alguno de los parametros")
+                    print("\n")
+    else:
+            print("Error en la línea:", contador)
+            print("Lo escrito, no está definido dentro del lenguaje")
+            print("\n")
         
+            
+        
+        
+            
              
                 
                 
@@ -405,6 +452,6 @@ else:
     print("\n")
 
         # elif contents[0]== "END":
-        # else 
+
 
 #RESPUESTA BUSCADA:
