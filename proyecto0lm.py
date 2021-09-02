@@ -69,6 +69,8 @@ def verify_sintax():
         #Evalua todos los posibles primeros argumentos.
         
         verificar_comando(contents,contador)
+        if correct == False: # si encuentra un error ya no tiene qeu buscar mas.
+            break
         contador += 1
         
     
@@ -350,23 +352,20 @@ def verificar_comando(contents,contador):
         output = True
         #revisa si n es una variable defininda o un número entero
         try:
-            if mp.get(catalog['user_defined'],int(contents[1])) == None:
-                print('Error en línea:',contador)
-                print("No se ha definido la varibale utilizada")
-                correct = False
+            if mp.get(catalog['user_defined'],contents[1]) == None: # si es una variable previamente definida esto es false y no entra al if.
+                int(contents[1]) # si entra es porque no es una variable definida por el usuario y entonces debe ser un numero entero.
         except ValueError:
-                print('Error en línea:',contador)
-                print("La variable n no es un entero")
-                print("\n")
-                correct = False
+            print('Error en línea:',contador)
+            print("La variable n no es un entero\n En:", " ".join(contents))
+            print("\n")
+            correct = False
         try:
-                contents[2] == str("[")
-                parentesis2 = False
-        except ValueError:
-                print('Error en línea:',contador)
-                print("Debe abrir el bloque de comandos")
-                print("\n")
-                correct = False
+            assert contents[2].startswith("[") , "falta el corchete de apertura: [. "
+        except:
+            print('Error en línea:',contador)
+            print("sintaxis incorrecta para definir un comando REPEAT \n En: ", " ".join(contents))
+            print("\n")
+            correct = False
     elif contents[0]== "TO":
         output = False
         end = False
@@ -428,15 +427,16 @@ def verificar_comando(contents,contador):
             print("Lo escrito, no está definido dentro del lenguaje")
             print("\n")
         
-            
+
+# COMENTARIOS:
+# Try except es para manejo de excepciones, entonces solo entra en un except si el codigo en el try lazo un error.  
         
         
             
              
                 
                 
-    
-        
+
 verify_sintax()
 if correct == False:
     print("\n")
