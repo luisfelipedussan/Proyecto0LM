@@ -82,32 +82,32 @@ def verificar_comando(contents,contador):
     global correct
     global output
     global end
-    
-    if contents[0]== "DEFINE":
+    print(contents)
+    if contents[0]== "DEFINE": # en clase dijeron que las variables se sobre escriben. 
             try:
                 #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
                 if mp.get(catalog['terminales'],contents[1])!= None: 
                  print('Error:')
                  print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:', " ".join(contents))
                  print("\n")
-                correct = False
+                #correct = False
                 # Intenta guardar el valor asignado a la variable por el usuario.
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
             except ValueError:
                 print('Error en línea:',contador)
                 print('El valor a guardar en la variable debe ser un numero entero\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=3:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 3 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "MOVE":
             try:
                 int(contents[1])
@@ -116,17 +116,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                correct = False
+                #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "RIGHT":
             try:
                 int(contents[1])
@@ -134,16 +134,17 @@ def verificar_comando(contents,contador):
                 if mp.get(catalog['user_defined'],contents[1])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "LEFT":
             try:
                 int(contents[1])
@@ -152,17 +153,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                correct = False
+                #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "ROTATE":
             try:
                 int(contents[1])
@@ -171,17 +172,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                correct = False
+                #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
         # este tampoco es igual a la mayoria.
     elif contents[0]== "LOOK":
             try:
@@ -189,16 +190,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para el comando LOOK no es valido. Los argumentos permitidos son: N, E, W o S.\n En:', " ".join(contents))
                     print("\n")
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
-                correct = False
+                #correct = False
                 print("\n")
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "DROP":
             try:
                 int(contents[1])
@@ -207,16 +209,16 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                    correct = False
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
-                correct = False
+                #correct = False
                 print("\n")
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
-                correct = False
+                #correct = False
                 print("\n")
     elif contents[0]== "FREE":
             try:
@@ -226,14 +228,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero o una varibale definida','\n En:', " ".join(contents))
                     print("\n")
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
+                #correct = False
     elif contents[0]== "PICK":
             try:
                 int(contents[1])
@@ -242,17 +247,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                    correct = False
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
     elif contents[0]== "POP":
             try:
                 int(contents[1])
@@ -261,17 +266,17 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                    correct = False
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             if len(contents)!=2:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
         # Este tambien es diferente a la mayoria.
     elif contents[0]== "CHECK":
             try:
@@ -279,42 +284,43 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para el comando CHECK no es valido. Los argumentos permitidos son: C o B seguidos del numero a revisar.\n En:', " ".join(contents))
                     print("\n")
-        
+                    #correct = False
                 int(contents[2])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[2])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
                     print('Error en línea:',contador)
                     print('El argumento para', contents[0] ,'debe ser un numero entero','\n En:', " ".join(contents))
                     print("\n")
-                    correct = False
+                    #correct = False
             except IndexError:
                 print('Error en línea:',contador)
                 print('Faltan argumentos en la entrada\n En:', " ".join(contents))
-                correct = False
+                #correct = False
             if len(contents)!=3:
                 print('Error en línea:',contador)
                 print('Se esperaban solo 2 argumentos pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
         #Este ya no es igual a los demas.
     elif contents[0]== "BLOCKEDP":
             if len(contents)!=1:
                 print('Error en línea:',contador)
                 print('Se esperaba solo 1 argumento(s) pero se recibieron mas\n En:', " ".join(contents))
                 print("\n") 
-                correct = False
+                #correct = False
     elif contents[0] == "NOP" or contents[0] == "NOP]":
             if len(contents) != 1:
                 print('Error en línea:',contador)
                 print('Se esperaba solo 1 argumento(s) pero se recibieron mas\n En:', " ".join(contents))
                 print("\n")
-                correct = False
+                #correct = False
             elif contents[0][-1] == "]":
                 if parentesis2== True:
                     print('Error en línea:',contador) 
+                    print("Error En:", " ".join(contents))
                     print("Se encontró una cadena de bloque que nunca fue abierta")
                     print("\n")
-                    correct = False
+                    #correct = False
                 elif parentesis2 == False:
                     parentesis2 = True
     elif contents[0]== "(BLOCK":
@@ -326,9 +332,10 @@ def verificar_comando(contents,contador):
     elif contents[0] == (")") or contents[-1][len(contents[-1])-1] == (")"):
             if parentesis == False:
                 print('Error en línea:',contador)
+                print("Error En:", " ".join(contents))
                 print ("Primero se debe abrir un bloque de código")
                 print("\n")
-                correct = False
+                #correct = False
             elif parentesis == True:
                 parentesis = False
     elif contents[0]== "IF":
@@ -337,9 +344,10 @@ def verificar_comando(contents,contador):
                assert contents[2][0] == "["  
             except:
                 print('Error en línea:',contador)
-                print("Revisa la función IF")
+                print("Error En:", " ".join(contents))
+                print("El IF debe contener el booleano BLOCKEDP ademas de la apertura del corchete.")
                 print("\n")
-                correct = False
+                #correct = False
             try:
                 if contents[2][0] =="[" or contents[-1] == "[":
                     parentesis2= False 
@@ -347,26 +355,25 @@ def verificar_comando(contents,contador):
                 if len(contents[2])>1:
                     del contents[0]
                     del contents[0]
-                    contents[0].replace('\[','')
-                    print (type(contents[0]))
-                    print(contents)
+                    cadena = contents[0].replace("[","")
+                    contents[0] = cadena
                     contador -= 1
                     verificar_comando(contents,contador)
             except:
                 print('Error en línea:',contador)
+                print("Error En:", " ".join(contents))
                 print("Revisa la función IF")
                 print("\n")
-                correct =False
-                
-                
+                #correct = False
     elif contents[0] == "]":
         if parentesis2 == False:
             parentesis2 = True
         if parentesis2 == True:
             print('Error en línea:',contador)
+            print("Error En:", " ".join(contents))
             print("No se abrió previamente ningún bloque")
             print("\n")
-            correct = False
+            #correct = False
     elif contents[0]== "REAPEAT":
         output = True
         #revisa si n es una variable defininda o un número entero
@@ -377,42 +384,39 @@ def verificar_comando(contents,contador):
             print('Error en línea:',contador)
             print("La variable n no es un entero\n En:", " ".join(contents))
             print("\n")
-            correct = False
+            #correct = False
         try:
             assert contents[2].startswith("[") , "falta el corchete de apertura: [. "
         except:
             print('Error en línea:',contador)
             print("sintaxis incorrecta para definir un comando REPEAT \n En: ", " ".join(contents))
             print("\n")
-            correct = False
+            #correct = False
     elif contents[0]== "TO":
         output = False
         end = False
         #Revisión de la la función definida
-        try:
-            if  mp.get( catalog['funciones'],str(contents[1])) == None:
-                mp.put(catalog['funciones'],str(contents[1]),None)
-            else:
-                print('Error en línea:',contador)
-                print("La función ya estaba definida previamente")
-                print("\n")
-                correct = False
-        except ValueError:
+        if  mp.get( catalog['funciones'],contents[1]) == None:
+            mp.put(catalog['funciones'],contents[1],None)
+        else:
             print('Error en línea:',contador)
-            print("El nombre de la función debe ser de tipo str")
+            print("Error En:", " ".join(contents))
+            print("La función ya estaba definida previamente")
             print("\n")
-            correct = False
+            #correct = False
         #revisión de los parametros definidos
         lcon = len(contents)
         if lcon > 1 :
             del contents[0]
             del contents[0]
             for param in contents:
+                print(param[0]) # BORRAR MAS ADELANTE.
                 if param[0] != ":" :
                     print('Error en línea:',contador)
+                    print("Error En:", " ".join(contents))
                     print("Para definir un parametro debe comenzar con :")
                     print("\n")
-                    correct = False
+                    #correct = False
                 else:
                     mp.put(catalog['parametros'],param,None)    
     elif contents[0] == "OUTPUT":
@@ -420,10 +424,10 @@ def verificar_comando(contents,contador):
             output = True
         elif output == True:
             print("Error en la línea:", contador)
-            print(contents)
+            print("Error En:", " ".join(contents))
             print("No existe la apertura de alguna función")
-            print(len(contents))
             print("\n")
+            #correct = False
         if len(contents) > 1:
             del contents[0]
             contador -= 1
@@ -433,42 +437,41 @@ def verificar_comando(contents,contador):
             end = True
         elif end == True:
             print ("Error en la línea:",contador)
+            print("Error En:", " ".join(contents))
             print("No se le puede poner fin a una función que nunca fue abierta")
             print("\n")
+            #correct = False
     elif  contents[0] == mp.get(catalog['funciones'],contents[0]) != None:
             for param in range(1,len(contents)):
-                if mp.get(catalog['parametros'],param) == None:
-                    print("Error en línea:",contador)
-                    print("No se ha definido alguno de los parametros")
-                    print("\n")
+                try:
+                    int(param) #verifica si esto es un int.
+                except:
+                    if mp.get(catalog['user_defined'],param) == None:
+                        print("Error en línea:",contador)
+                        print("Error En:", " ".join(contents))
+                        print("No se ha definido alguno de los parametros")
+                        print("\n")
+                        #correct = False
     else:
-            print("Error en la línea:", contador)
+            print("Error En:", " ".join(contents))
             print("Lo escrito, no está definido dentro del lenguaje")
             print("\n")
-        
-
-# COMENTARIOS:
-# Try except es para manejo de excepciones, entonces solo entra en un except si el codigo en el try lazo un error.  
-        
-        
-            
-             
-                
+            #correct = False
                 
 
 verify_sintax()
-if correct == False:
-    print("\n")
-    print("**********")
-    print("El código está incorrectamente escrito")
-    print("**********")
-    print("\n")
-else:
-    print("\n")
-    print("**********")
-    print("El código está correctamente escrito")
-    print("**********")
-    print("\n")
+# if correct == False:
+#     print("\n")
+#     print("**********")
+#     print("El código está incorrectamente escrito")
+#     print("**********")
+#     print("\n")
+# else:
+#     print("\n")
+#     print("**********")
+#     print("El código está correctamente escrito")
+#     print("**********")
+#     print("\n")
 
         # elif contents[0]== "END":
 
