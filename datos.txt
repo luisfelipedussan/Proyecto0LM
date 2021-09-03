@@ -12,7 +12,7 @@ LEFT 90
 DEFINE one 1
 
 TO foo :c :p
-OUTPUT
+OUTPUT 
 	DROP :c
 	FREE :p
 	  MOVE n

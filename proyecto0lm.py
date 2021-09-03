@@ -279,6 +279,7 @@ def verificar_comando(contents,contador):
                     print('Error en línea:',contador)
                     print('El argumento para el comando CHECK no es valido. Los argumentos permitidos son: C o B seguidos del numero a revisar.\n En:', " ".join(contents))
                     print("\n")
+        
                 int(contents[2])
             except ValueError:
                 if mp.get(catalog['user_defined'],contents[2])==None: # verifica si el numero de veces a moverse no es una variable previamente definida.
@@ -332,14 +333,32 @@ def verificar_comando(contents,contador):
                 parentesis = False
     elif contents[0]== "IF":
             try:
-                contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP" or contents[2][0] == "["  
-            except ValueError:
+               assert contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP" 
+               assert contents[2][0] == "["  
+            except:
                 print('Error en línea:',contador)
                 print("Revisa la función IF")
                 print("\n")
                 correct = False
-            if contents[2][0] =="[" or contents[-1] == "[":
-                parentesis2= False
+            try:
+                if contents[2][0] =="[" or contents[-1] == "[":
+                    parentesis2= False 
+                
+                if len(contents[2])>1:
+                    del contents[0]
+                    del contents[0]
+                    contents[0].replace('\[','')
+                    print (type(contents[0]))
+                    print(contents)
+                    contador -= 1
+                    verificar_comando(contents,contador)
+            except:
+                print('Error en línea:',contador)
+                print("Revisa la función IF")
+                print("\n")
+                correct =False
+                
+                
     elif contents[0] == "]":
         if parentesis2 == False:
             parentesis2 = True
@@ -396,7 +415,7 @@ def verificar_comando(contents,contador):
                     correct = False
                 else:
                     mp.put(catalog['parametros'],param,None)    
-    elif contents[0] == "OUTPUT" or contents[0] == "output":
+    elif contents[0] == "OUTPUT":
         if output == False:
             output = True
         elif output == True:
