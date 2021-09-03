@@ -23,7 +23,7 @@ foo 1 3
 TO goend
 output IF !BLOCKEDP [
 	(BLOCK MOVE 1
-		      goEnd)
+		   goEnd)
 	NOP
 	] 
 END
