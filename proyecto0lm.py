@@ -6,7 +6,19 @@ from DISClib.DataStructures import mapstructure as ht
 from DISClib.ADT import map as mp
 from DISClib.ADT import list as lt
 
+###### VARIABLES:
+correct = True #empieza suponiendo que el script esta bien escrito.
+parentesis = 0
+brackets = 0
+output = True
+end = True
+catalog = { 'terminales' : None,
+            'user_defined': None,
+            'funciones': None,
+            'parametros' : None
+                    }
 
+###### FUNCIONES:
 def Leng_structures(catalog : Mapping[str, Any]):
     
     catalog['terminales'] = mp.newMap(numelements=30,maptype = 'CHAINING')
@@ -39,18 +51,7 @@ def Leng_structures(catalog : Mapping[str, Any]):
     mp.put(catalog["terminales"],']',0)
     mp.put(catalog["terminales"],'!',0)
     
-catalog = { 'terminales' : None,
-            'user_defined': None,
-            'funciones': None,
-            'parametros' : None
-                    }
-Leng_structures(catalog) #crea los diccionarios donde se guarda el lenguaje predefinido y el definido por el usuario.
-correct = True #empieza suponiendo que el script esta bien escrito.
-parentesis = 0
-brackets = 0
-output = True
-end = True
-    
+
 def verify_sintax():
     fileName = input('Enter file name: ')
     print("\n")
@@ -463,6 +464,10 @@ def verificar_comando(contents):
             print("\n")
             correct = False
 
+
+
+###### EJECUTA EL COGIDO:
+Leng_structures(catalog) 
 verify_sintax()
 if correct == False:
     print("**********")
@@ -471,7 +476,7 @@ if correct == False:
 elif parentesis!=0 or brackets!=0:
     print("**********")
     print("El código está incorrectamente escrito. No hay consistencia con los parentesis o con los corchetes.")
-    print("BRACKETS:", brackets, "PARENTESIS", parentesis)
+    print("CORCHETES:", brackets, "PARENTESIS", parentesis)
     print("**********")
 else:
     print("**********")
