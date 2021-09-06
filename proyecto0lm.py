@@ -78,8 +78,10 @@ def verificar_comando(contents):
     global correct
     global output
     global end
-   # print(contents)
 
+    
+    if len(contents)==0:
+        return
     # aqui entra cuando el comando ingresado contiene un cierre: ] o ):
     if contents[-1].endswith("]") or contents[-1].endswith(")"):
         cadena = ""
@@ -90,16 +92,16 @@ def verificar_comando(contents):
             cadena = contents[-1].replace(")","",1)
             parentesis -=1
         contents[-1] = cadena
-        if len(contents[-1])>0:
+        if len(contents)!=0 and contents[0] != '':
             verificar_comando(contents)
     elif contents[0]== "DEFINE": # en clase dijeron que las variables se sobre escriben. 
             try:
                 #verifica que el nombre dado a la variable no sea una palabra reservada del lenguaje.
                 if mp.get(catalog['terminales'],contents[1])!= None: 
-                 print('Error:')
-                 print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:', " ".join(contents))
-                 print("\n")
-                 correct = False
+                    print('Error:')
+                    print('El nombre dado para la variable definida no puede ser una de las palabras reservadas\n En:', " ".join(contents))
+                    print("\n")
+                    correct = False
                 # Intenta guardar el valor asignado a la variable por el usuario.
                 #reemplaza el valor (permite sobreescribir una variable)
                 mp.put(catalog['user_defined'],contents[1],int(contents[2]))
@@ -340,16 +342,15 @@ def verificar_comando(contents):
                 parentesis -= 1
     elif contents[0]== "IF":
             try:
-               assert (contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP") and contents[2][0] == "["  
+               assert (contents[1] == "BLOCKEDP" or contents[1] == "!BLOCKEDP") and contents[2].startswith("[")
+               brackets +=1
             except:
                 print('Error en línea:')
                 print("Error En:", " ".join(contents))
                 print("El IF debe contener el booleano BLOCKEDP ademas de la apertura del corchete.")
                 print("\n")
                 correct = False
-            try:
-                if contents[2][0] =="[" or contents[-1] == "[":
-                    brackets +=1
+            try:    
                 if len(contents[2])>1:
                     del contents[0]
                     del contents[0]
@@ -366,12 +367,11 @@ def verificar_comando(contents):
         if brackets >=1:
             brackets -=1
         if brackets == 0:
-            print('Error en línea:')
             print("Error En:", " ".join(contents))
             print("No se abrió previamente ningún bloque")
             print("\n")
             correct = False
-    elif contents[0]== "(REAPEAT":
+    elif contents[0]== "(REPEAT":
         parentesis += 1
         #revisa si n es una variable defininda o un número entero
         try:
@@ -384,6 +384,7 @@ def verificar_comando(contents):
             correct = False
         try:
             assert contents[2].startswith("[")
+            brackets +=1
             if len(contents[2])>1: # si tiene un comando seguido del corchete.
                 del contents[0] # borra REPEAT
                 del contents[0] # borra n
@@ -461,25 +462,18 @@ def verificar_comando(contents):
             print("Lo escrito, no está definido dentro del lenguaje")
             print("\n")
             correct = False
-#COMENTARIOS:
-# variables se tienen que buscar tanto en user defined como en parameters de funciones. (caso OUTPUT DROP :o) LISTO.
-# repeat tiene tambien parentesis de apertura y cierre. LISTO
-# Cualquier comando puede empezar o terminar por [] porque puede aparecer como primer o ultimo comando en un IF o en un REPEAT. LISTO.
-# en REPEAT porque hay un output = true?
-# Se tiene que permitir sobreescribir variables (en DEFINE). LISTO.
-#Revisar elif en linea 334. solo debe verificar si el UNICO contenido en el comando es ) de cierre. lo otro que verifica interfiere con el comentario 3. LISTO.
-
 
 verify_sintax()
 if correct == False:
-    print("\n")
     print("**********")
     print("El código está incorrectamente escrito")
     print("**********")
-    print("\n")
+elif parentesis!=0 or brackets!=0:
+    print("**********")
+    print("El código está incorrectamente escrito. No hay consistencia con los parentesis o con los corchetes.")
+    print("BRACKETS:", brackets, "PARENTESIS", parentesis)
+    print("**********")
 else:
-    print("\n")
     print("**********")
     print("El código está correctamente escrito")
     print("**********")
-    print("\n")

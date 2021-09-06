@@ -1,10 +1,11 @@
 ROTATE 3
 
 IF BLOCKEDP [MOVE 1
-NOP]
+NOP
+]
 
 (BLOCK
-IF BLOCKEDP [MOVE 1
+IF BLOCKEDP [ LEFT 10
 NOP]
 LEFT 90
 )
@@ -15,15 +16,18 @@ TO foo :c :p
 OUTPUT
 	DROP :c
 	FREE :p
-	  MOVE n
+	  MOVE one
 END
 foo 1 3
 
+(REPEAT one [RIGHT 3])
+
 
 TO goend
-output IF !BLOCKEDP [
+OUTPUT IF !BLOCKEDP [ CHECK B 2
 	(BLOCK MOVE 1
 		   goEnd)
 	NOP
-	] 
+
+	]
 END
